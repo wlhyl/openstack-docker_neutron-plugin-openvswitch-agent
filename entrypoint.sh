@@ -77,3 +77,5 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs local_ip $LOCAL_IP
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs bridge_mappings external:br-ex
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini agent tunnel_types vxlan
+
+/usr/bin/supervisord -n
