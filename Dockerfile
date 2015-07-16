@@ -26,5 +26,6 @@ ADD entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
 
 ADD neutron-plugin-openvswitch-agent.conf /etc/supervisor/conf.d/neutron-plugin-openvswitch-agent.conf
+ADD openvswitch.conf /etc/supervisor/conf.d/openvswitch.conf
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
