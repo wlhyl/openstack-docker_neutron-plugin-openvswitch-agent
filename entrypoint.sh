@@ -32,14 +32,9 @@ fi
 
 CRUDINI='/usr/bin/crudini'
 
-if [ ! -f /etc/neutron/.complete ];then
-    echo 1 >/proc/sys/net/ipv4/ip_forward
-    echo 0 >/proc/sys/net/ipv4/conf/all/rp_filter
-    echo 0 >/proc/sys/net/ipv4/conf/default/rp_filter
-
-    cp -rp /neutron/* /etc/neutron
-
-    chown neutron:neutron /var/log/neutron/
+    # echo 1 >/proc/sys/net/ipv4/ip_forward
+    # echo 0 >/proc/sys/net/ipv4/conf/all/rp_filter
+    # echo 0 >/proc/sys/net/ipv4/conf/default/rp_filter
     
     $CRUDINI --del /etc/neutron/neutron.conf database connection
 
@@ -82,8 +77,3 @@ if [ ! -f /etc/neutron/.complete ];then
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs local_ip $LOCAL_IP
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs bridge_mappings external:br-ex
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini agent tunnel_types vxlan
-    
-    touch /etc/neutron/.complete
-fi
-
-/usr/bin/supervisord -n
