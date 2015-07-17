@@ -62,7 +62,7 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch
     
     #
-    if [ $IS_NETWORK -eq 1 ]
+    if [ $IS_NETWORK -eq 1 ];then
       $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
     fi
 
@@ -75,7 +75,7 @@ CRUDINI='/usr/bin/crudini'
     
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs local_ip $LOCAL_IP
     #
-    if [ $IS_NETWORK -eq 1 ] 
+    if [ $IS_NETWORK -eq 1 ];then
       $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs bridge_mappings external:br-ex
     fi
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini agent tunnel_types vxlan
