@@ -31,10 +31,6 @@ if [ -z "$LOCAL_IP" ];then
 fi
 
 CRUDINI='/usr/bin/crudini'
-
-    # echo 1 >/proc/sys/net/ipv4/ip_forward
-    # echo 0 >/proc/sys/net/ipv4/conf/all/rp_filter
-    # echo 0 >/proc/sys/net/ipv4/conf/default/rp_filter
     
     $CRUDINI --del /etc/neutron/neutron.conf database connection
 
@@ -64,8 +60,11 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vlan,gre,vxlan
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch
-
-    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
+    
+    #
+    if [ $IS_NETWORK -eq 1 ]
+      $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
+    fi
 
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 10:100
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini vxlan_group 224.0.0.1
@@ -75,7 +74,10 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firewall_driver neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
     
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs local_ip $LOCAL_IP
-    $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs bridge_mappings external:br-ex
+    #
+    if [ $IS_NETWORK -eq 1 ] 
+      $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs bridge_mappings external:br-ex
+    fi
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini agent tunnel_types vxlan
 
 /usr/bin/supervisord -n
