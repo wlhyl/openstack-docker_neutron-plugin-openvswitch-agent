@@ -5,7 +5,6 @@
 - KEYSTONE_ENDPOINT: keystone endpoint
 - NEUTRON_PASS: openstack neutron密码
 - LOCAL_IP: tunel ip
-- IS_NETWORK: 节点否为网络节点,1:是,0:否
 
 # volumes:
 - /opt/openstack/neutron-plugin-openvswitch-agent/: /etc/neutron

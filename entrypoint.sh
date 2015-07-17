@@ -61,10 +61,8 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch
     
-    #
-    if [ $IS_NETWORK -eq 1 ];then
-      $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
-    fi
+    #计算节点可以不用配置flat_networks
+    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
 
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 10:100
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini vxlan_group 224.0.0.1
@@ -74,10 +72,9 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firewall_driver neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
     
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs local_ip $LOCAL_IP
-    #
-    if [ $IS_NETWORK -eq 1 ];then
-      $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs bridge_mappings external:br-ex
-    fi
+    
+    # 计算节点可以不用配置bridge_mappings
+    $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini ovs bridge_mappings external:br-ex
     $CRUDINI --set /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini agent tunnel_types vxlan
 
 /usr/bin/supervisord -n
