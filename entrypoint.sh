@@ -65,7 +65,7 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
 
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 10:100
-    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini vxlan_group 224.0.0.1
+    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
     
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup enable_security_group True
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup enable_ipset True
