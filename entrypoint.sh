@@ -53,8 +53,8 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/neutron.conf keystone_authtoken username neutron
     $CRUDINI --set /etc/neutron/neutron.conf keystone_authtoken password $NEUTRON_PASS
     
-    $CRUDINI --set /etc/neutron/neutron.conf DEFAULT core_plugin ml2
-    $CRUDINI --set /etc/neutron/neutron.conf DEFAULT service_plugins router
+    $CRUDINI --set /etc/neutron/neutron.conf DEFAULT core_plugin ml2 neutron.plugins.ml2.plugin:Ml2Plugin
+    $CRUDINI --set /etc/neutron/neutron.conf DEFAULT service_plugins neutron.services.l3_router.l3_router_plugin:L3RouterPlugin
     $CRUDINI --set /etc/neutron/neutron.conf DEFAULT allow_overlapping_ips True
 
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vlan,gre,vxlan
