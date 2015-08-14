@@ -8,14 +8,12 @@
 - LOCAL_IP: tunel ip
 
 # volumes:
-- /opt/openstack/neutron-plugin-openvswitch-agent/: /etc/neutron
-- /opt/openstack/log/neutron-plugin-openvswitch-agent/: /var/log/neutron/
+- /etc/neutron/: /etc/neutron
 
 # 启动neutron-plugin-openvswitch-agent
 ```bash
 docker run -d --name neutron-plugin-openvswitch-agent \
-    -v /opt/openstack/neutron-plugin-openvswitch-agent/:/etc/neutron \
-    -v /opt/openstack/log/neutron-plugin-openvswitch-agent/:/var/log/neutron/ \
+    -v /etc/neutron/:/etc/neutron \
     -e RABBIT_HOST=10.64.0.52 \
     -e RABBIT_USERID=openstack \
     -e RABBIT_PASSWORD=openstack \
