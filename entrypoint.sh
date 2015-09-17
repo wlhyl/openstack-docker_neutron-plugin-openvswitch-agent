@@ -83,8 +83,10 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
     
     # 清空/etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini
-    
-    cp /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini.orig
-    echo > /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini
+    grep -i debian /etc/issue >/dev/null 2>/dev/null
+    if [ $? -eq 0 ];then
+        cp /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini.orig
+        echo > /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini
+    fi
 
 /usr/bin/supervisord -n
