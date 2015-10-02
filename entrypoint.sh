@@ -67,7 +67,7 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch,l2population
     
     #计算节点可以不用配置flat_networks
-    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
+    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vlan network_vlan_ranges external:2:2999,private:2:2999
 
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 10:100
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
@@ -79,7 +79,7 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip $LOCAL_IP
     
     # 计算节点可以不用配置bridge_mappings
-    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings external:br-ex
+    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings external:br-ex,internal:br-private
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
     
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent l2_population True
