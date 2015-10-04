@@ -79,7 +79,7 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip $LOCAL_IP
     
     # 计算节点可以不用配置bridge_mappings
-    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings external:br-ex,internal:br-private
+    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings external:br-ex,private:br-private
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
     
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent l2_population True
