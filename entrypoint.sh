@@ -36,6 +36,9 @@ if [ -z "$LOCAL_IP" ];then
 fi
 
 CRUDINI='/usr/bin/crudini'
+
+    $CRUDINI --set /etc/neutron/neutron.conf DEFAULT state_path /var/lib/neutron
+    $CRUDINI --set /etc/neutron/neutron.conf DEFAULT lock_path /var/lib/neutron/lock
     
     $CRUDINI --del /etc/neutron/neutron.conf database connection
 
@@ -59,16 +62,17 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/neutron.conf keystone_authtoken password $NEUTRON_PASS
     
     $CRUDINI --set /etc/neutron/neutron.conf DEFAULT core_plugin neutron.plugins.ml2.plugin.Ml2Plugin
-    $CRUDINI --set /etc/neutron/neutron.conf DEFAULT service_plugins neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
+    $CRUDINI --set /etc/neutron/neutron.conf DEFAULT service_plugins router
     $CRUDINI --set /etc/neutron/neutron.conf DEFAULT allow_overlapping_ips True
+    # liberty中增加了port_security参数，kilo可以支持此参数，但未设置
+    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security
 
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vlan,gre,vxlan
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch,l2population
     
-    #计算节点可以不用配置flat_networks
+    #计算节点可以不用配置 ml2_type_{flat,vlan,vxlan}
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vlan network_vlan_ranges external:2:2999,private:2:2999
-
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 10:10000
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
     
@@ -77,19 +81,19 @@ CRUDINI='/usr/bin/crudini'
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firewall_driver neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
     
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip $LOCAL_IP
-    
     # 计算节点可以不用配置bridge_mappings
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings external:br-ex,private:br-private
-    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
-    
+ 
+    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan 
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent l2_population True
     $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent arp_responder True
+    $CRUDINI --set /etc/neutron/plugins/ml2/ml2_conf.ini agent prevent_arp_spoofing True
     
     # 清空/etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini
-    grep -i debian /etc/issue >/dev/null 2>/dev/null
-    if [ $? -eq 0 ];then
-        cp /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini.orig
-        echo > /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini
-    fi
+    # grep -i debian /etc/issue >/dev/null 2>/dev/null
+    # if [ $? -eq 0 ];then
+    #     cp /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini.orig
+    #     echo > /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini
+    # fi
 
 /usr/bin/supervisord -n
